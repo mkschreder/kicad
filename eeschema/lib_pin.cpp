@@ -768,44 +768,46 @@ void LIB_PIN::DrawPinSymbol( EDA_DRAW_PANEL* aPanel,
         }
     }
 
-    if( m_shape == PINSHAPE_INPUT_LOW || m_shape == PINSHAPE_CLOCK_LOW )
+    if( m_type == PIN_BIDI || m_type == PIN_INPUT || m_shape == PINSHAPE_INPUT_LOW || m_shape == PINSHAPE_CLOCK_LOW )
     {
         const int symbol_size = ExternalPinDecoSize( *this );
         if( MapY1 == 0 )            /* MapX1 = +- 1 */
         {
-            GRMoveTo( x1 + MapX1 * symbol_size * 2, y1 );
+            GRMoveTo( x1, y1 );
+            GRLineTo( clipbox, aDC, x1, y1 - symbol_size, width, color );
             GRLineTo( clipbox, aDC,
-                      x1 + MapX1 * symbol_size * 2, y1 - symbol_size * 2,
+                      x1 - MapX1 * symbol_size, y1,
                       width, color );
+            //GRLineTo( clipbox, aDC, x1, y1 + symbol_size, width, color );
             GRLineTo( clipbox, aDC, x1, y1, width, color );
         }
         else    /* MapX1 = 0 */
         {
-            GRMoveTo( x1, y1 + MapY1 * symbol_size * 2 );
-            GRLineTo( clipbox, aDC, x1 - symbol_size * 2,
-                      y1 + MapY1 * symbol_size * 2, width, color );
+            GRMoveTo( x1, y1 + MapY1 * symbol_size );
+            GRLineTo( clipbox, aDC, x1 - symbol_size,
+                      y1 + MapY1 * symbol_size, width, color );
             GRLineTo( clipbox, aDC, x1, y1, width, color );
         }
     }
 
 
-    if( m_shape == PINSHAPE_OUTPUT_LOW )    /* IEEE symbol "Active Low Output" */
+    if( m_type == PIN_BIDI || m_type == PIN_OUTPUT || m_shape == PINSHAPE_OUTPUT_LOW )    /* IEEE symbol "Active Low Output" */
     {
         const int symbol_size = ExternalPinDecoSize( *this );
         if( MapY1 == 0 )            /* MapX1 = +- 1 */
         {
-            GRMoveTo( x1, y1 - symbol_size * 2 );
-            GRLineTo( clipbox,
-                      aDC,
-                      x1 + MapX1 * symbol_size * 2,
-                      y1,
-                      width,
-                      color );
+            GRMoveTo( x1, y1 );
+            GRLineTo( clipbox, aDC, x1, y1 - symbol_size, width, color );
+            GRLineTo( clipbox, aDC,
+                      x1 + MapX1 * symbol_size, y1,
+                      width, color );
+            //GRLineTo( clipbox, aDC, x1, y1 + symbol_size, width, color );
+            GRLineTo( clipbox, aDC, x1, y1, width, color );
         }
         else    /* MapX1 = 0 */
         {
-            GRMoveTo( x1 - symbol_size * 2, y1 );
-            GRLineTo( clipbox, aDC, x1, y1 + MapY1 * symbol_size * 2,
+            GRMoveTo( x1 - symbol_size, y1 );
+            GRLineTo( clipbox, aDC, x1, y1 + MapY1 * symbol_size,
                       width, color );
         }
     }
@@ -836,7 +838,18 @@ void LIB_PIN::DrawPinSymbol( EDA_DRAW_PANEL* aPanel,
                 posX + NCSYMB_PIN_DIM, posY - NCSYMB_PIN_DIM,
                 posX - NCSYMB_PIN_DIM, posY + NCSYMB_PIN_DIM,
                 width, color );
-    }
+    } 
+	/*else if(m_type == PIN_INPUT){
+		GRLine( clipbox, aDC,
+				posX - NCSYMB_PIN_DIM, posY - NCSYMB_PIN_DIM,
+				posX + NCSYMB_PIN_DIM, posY + NCSYMB_PIN_DIM,
+				width, color );
+		GRLine( clipbox, aDC,
+				posX + NCSYMB_PIN_DIM, posY - NCSYMB_PIN_DIM,
+				posX - NCSYMB_PIN_DIM, posY + NCSYMB_PIN_DIM,
+				width, color );
+
+	}*/
 }
 
 
