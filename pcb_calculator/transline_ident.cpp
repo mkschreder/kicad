@@ -166,6 +166,9 @@ TRANSLINE_IDENT::TRANSLINE_IDENT( enum TRANSLINE_TYPE_ID aType )
         m_Messages.Add( _( "Conductor Losses" ) );
         m_Messages.Add( _( "Dielectric Losses" ) );
         m_Messages.Add( _( "Skin Depth" ) );
+        m_Messages.Add( _( "Capacitance" ) );
+        m_Messages.Add( _( "Inductance" ) );
+        m_Messages.Add( _( "Resistance" ) );
 
         AddPrm( new TRANSLINE_PRM( PRM_TYPE_SUBS, H_PRM,
                                    _( "H" ), _( "Height of Substrate" ), 0.2, true ) );
@@ -336,6 +339,8 @@ TRANSLINE_IDENT::TRANSLINE_IDENT( enum TRANSLINE_TYPE_ID aType )
         m_Messages.Add( _( "Dielectric Losses Even" ) );
         m_Messages.Add( _( "Dielectric Losses Odd" ) );
         m_Messages.Add( _( "Skin Depth" ) );
+        m_Messages.Add( _( "Differential Impedance" ) );
+        m_Messages.Add( _( "Coupling" ) );
 
         AddPrm( new TRANSLINE_PRM( PRM_TYPE_SUBS, H_PRM,
                                    _( "H" ), _( "Height of Substrate" ), 0.2, true ) );
