@@ -1024,7 +1024,24 @@ PCB_CALCULATOR_FRAME_BASE::PCB_CALCULATOR_FRAME_BASE( wxWindow* parent, wxWindow
 	m_Message7 = new wxStaticText( sbMessagesSizer->GetStaticBox(), wxID_ANY, _("dummy"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_Message7->Wrap( -1 );
 	fgSizerTranslResults->Add( m_Message7, 0, wxRIGHT|wxLEFT|wxEXPAND, 5 );
+
+	m_left_message8 = new wxStaticText( sbMessagesSizer->GetStaticBox(), wxID_ANY, _("dummy"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_left_message8->Wrap( -1 );
+	fgSizerTranslResults->Add( m_left_message8, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 	
+	m_Message8 = new wxStaticText( sbMessagesSizer->GetStaticBox(), wxID_ANY, _("dummy"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_Message8->Wrap( -1 );
+	fgSizerTranslResults->Add( m_Message8, 0, wxRIGHT|wxLEFT|wxEXPAND, 5 );
+
+	m_left_message9 = new wxStaticText( sbMessagesSizer->GetStaticBox(), wxID_ANY, _("dummy"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_left_message9->Wrap( -1 );
+	fgSizerTranslResults->Add( m_left_message9, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
+	
+	m_Message9 = new wxStaticText( sbMessagesSizer->GetStaticBox(), wxID_ANY, _("dummy"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_Message9->Wrap( -1 );
+	fgSizerTranslResults->Add( m_Message9, 0, wxRIGHT|wxLEFT|wxEXPAND, 5 );
+
+
 	
 	sbMessagesSizer->Add( fgSizerTranslResults, 1, wxEXPAND, 5 );
 	

@@ -60,6 +60,7 @@ MICROSTRIP::MICROSTRIP() : TRANSLINE()
     atten_dielectric = 0.0;     // Loss in dielectric (dB)
     atten_cond = 0.0;           // Loss in conductors (dB)
     Z0_h_1 = 0.0;               // homogeneous stripline impedance
+	rho = 0.0;
 }
 
 
@@ -470,6 +471,7 @@ void MICROSTRIP::get_microstrip_sub()
     murC  = getProperty( MURC_PRM );
     tand  = getProperty( TAND_PRM );
     rough = getProperty( ROUGH_PRM );
+    rho = getProperty( RHO_PRM );
 }
 
 
@@ -513,8 +515,18 @@ void MICROSTRIP::show_results()
     setResult( 0, er_eff, "" );
     setResult( 1, atten_cond, "dB" );
     setResult( 2, atten_dielectric, "dB" );
-
     setResult( 3, skindepth/UNIT_MICRON, "µm" );
+
+	double Cpf = (1e12 * 2.64e-11 * (er + 1.41))/(logf(5.98 * h / (0.8 * w + t)));
+	double in_per_m = 100 / 2.54;
+	double l_in = l * in_per_m;
+	double w_in = w * in_per_m;
+	double h_in = h * in_per_m;
+	double Luh = 0.00508*l_in*(log(2*l_in/(w_in+h_in))+.5+0.2235*(w_in+h_in)/l_in);
+	double Lz = 1e-3 * Cpf * Z0 * Z0 * l;
+	setResult( 4, Cpf * l, "pF");
+	setResult( 5, Luh * 1e3, "nH");
+	setResult( 6, rho * l / (t * w), "Ohm");
 }
 
 

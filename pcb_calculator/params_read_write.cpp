@@ -177,11 +177,11 @@ void PCB_CALCULATOR_FRAME::SetPrmValue( enum PRMS_ID aPrmId, double aValue )
  */
 void PCB_CALCULATOR_FRAME::SetResult( int aLineNumber, const wxString & aText )
 {
-    #define MSG_CNT_MAX 7
+    #define MSG_CNT_MAX 9
     wxStaticText * messages[MSG_CNT_MAX] =
         { m_Message1, m_Message2, m_Message3,
           m_Message4, m_Message5, m_Message6,
-            m_Message7
+            m_Message7, m_Message8, m_Message9
         };
 
     wxASSERT( ( aLineNumber >= 0 ) && ( aLineNumber < MSG_CNT_MAX ) );
