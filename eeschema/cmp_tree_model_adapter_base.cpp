@@ -172,7 +172,8 @@ void CMP_TREE_MODEL_ADAPTER_BASE::UpdateSearchString( wxString const& aSearch )
         m_tree.UpdateScore( matcher );
     }
 
-    m_tree.SortNodes();
+    // Do not sort this because we want to preserve the order in which libraries are defined in the library list
+    //m_tree.SortNodes();
 
     {
         wxWindowUpdateLocker updateLock( m_widget );

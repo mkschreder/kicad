@@ -149,6 +149,8 @@ SCH_BASE_FRAME::COMPONENT_SELECTION SCH_BASE_FRAME::SelectComponentFromLibrary(
         adapter->SetPreselectNode( aHistoryList[0].LibId, aHistoryList[0].Unit );
     }
 
+    // if no reordering or sorting has taken place in the libs class then these libraries
+    // should be in correct order with project libs first and all others through fallback
     const std::vector< wxString > libNicknames = libs->GetLogicalLibs();
 
     if( !loaded )
