@@ -384,20 +384,16 @@ std::vector<wxString> LIB_TABLE::GetLogicalLibs()
         {
             if( it->GetIsEnabled() )
             {
-                unique.insert( it->GetNickName() );
+				wxString name = it->GetNickName();
+				if(unique.find(name) == unique.end()){
+					ret.push_back(name);
+				}
             }
         }
 
     } while( ( cur = cur->fallBack ) != 0 );
 
-    ret.reserve( unique.size() );
-
-    // return a sorted, unique set of nicknames in a std::vector<wxString> to caller
-    for( std::set< wxString >::const_iterator it = unique.begin();  it!=unique.end();  ++it )
-    {
-        ret.push_back( *it );
-    }
-
+	// return table in the same order as it is defined in the library table
     return ret;
 }
 
