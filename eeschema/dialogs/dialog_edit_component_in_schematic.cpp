@@ -970,7 +970,7 @@ void DIALOG_EDIT_COMPONENT_IN_SCHEMATIC::copySelectedFieldToPanel()
     fieldNameTextCtrl->SetValue( field.GetName( false ) );
 
     // the names of the fixed fields are not editable, others are.
-    fieldNameTextCtrl->Enable(  fieldNdx >= MANDATORY_FIELDS );
+    //fieldNameTextCtrl->Enable(  fieldNdx >= MANDATORY_FIELDS );
     fieldNameTextCtrl->SetEditable( fieldNdx >= MANDATORY_FIELDS );
 
     // only user defined fields may be moved, and not the top most user defined
@@ -979,8 +979,8 @@ void DIALOG_EDIT_COMPONENT_IN_SCHEMATIC::copySelectedFieldToPanel()
     moveDownButton->Enable( ( fieldNdx >= MANDATORY_FIELDS ) && ( fieldNdx < ( m_FieldsBuf.size() - 1 ) ) );
 
     // may only delete user defined fields
-    deleteFieldButton->Enable( fieldNdx >= MANDATORY_FIELDS );
-
+    //deleteFieldButton->Enable( fieldNdx >= MANDATORY_FIELDS );
+    
     fieldValueTextCtrl->SetValidator( SCH_FIELD_VALIDATOR( false, field.GetId() ) );
     fieldValueTextCtrl->SetValue( field.GetText() );
 
@@ -1008,12 +1008,19 @@ void DIALOG_EDIT_COMPONENT_IN_SCHEMATIC::copySelectedFieldToPanel()
 
     // For power symbols, the value is NOR editable, because value and pin
     // name must be same and can be edited only in library editor
+    /*
     if( fieldNdx == VALUE && m_part && m_part->IsPower() )
         fieldValueTextCtrl->Enable( false );
     else
         fieldValueTextCtrl->Enable( true );
-
+    */
     textSizeTextCtrl->SetValue( EDA_GRAPHIC_TEXT_CTRL::FormatSize( g_UserUnit, field.GetTextWidth() ) );
+
+    // disable all editing of fields because they should be edited in library editor
+    fieldNameTextCtrl->Enable(  false );
+    deleteFieldButton->Enable( false );
+    fieldValueTextCtrl->Enable( false );
+
 
     wxPoint coord = field.GetTextPos();
     wxPoint zero  = -m_cmp->m_Pos;  // relative zero
