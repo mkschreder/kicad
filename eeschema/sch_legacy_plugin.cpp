@@ -1921,7 +1921,7 @@ void SCH_LEGACY_PLUGIN::saveField( SCH_FIELD* aField )
                   aField->IsBold() ? 'B' : 'N' );
 
     // Save field name, if the name is user definable
-    if( aField->GetId() >= FIELD1 )
+    if( aField->GetId() >= MANDATORY_FIELDS )
     {
         m_out->Print( 0, " %s", EscapedUTF8( aField->GetName() ).c_str() );
     }
@@ -3727,7 +3727,7 @@ void SCH_LEGACY_PLUGIN_CACHE::saveField( LIB_FIELD* aField,
      */
     wxString defName = TEMPLATE_FIELDNAME::GetDefaultFieldName( id );
 
-    if( id >= FIELD1 && !aField->m_name.IsEmpty() && aField->m_name != defName )
+    if( id >= MANDATORY_FIELDS && !aField->m_name.IsEmpty() && aField->m_name != defName )
         aFormatter->Print( 0, " %s", EscapedUTF8( aField->m_name ).c_str() );
 
     aFormatter->Print( 0, "\n" );
