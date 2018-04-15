@@ -101,6 +101,12 @@ bool DIALOG_UPDATE_FIELDS::TransferDataToWindow()
             if( !part )
                 continue;
 
+            std::vector<LIB_FIELD> fields;
+            part->GetFields(fields);
+            for(auto it = fields.begin(); it != fields.end(); ++it){
+                m_fields.insert((*it).GetName());
+            }
+            /*
             const auto& drawItems = part->GetDrawItems();
 
             for( auto it = drawItems.begin( LIB_FIELD_T ); it != drawItems.end( LIB_FIELD_T ); ++it )
@@ -108,6 +114,7 @@ bool DIALOG_UPDATE_FIELDS::TransferDataToWindow()
                 const LIB_FIELD* field = static_cast<const LIB_FIELD*>( &( *it ) );
                 m_fields.insert( field->GetName( false ) );
             }
+            */
         }
     }
 
@@ -118,7 +125,8 @@ bool DIALOG_UPDATE_FIELDS::TransferDataToWindow()
     {
         int idx = m_fieldsBox->Append( field );
 
-        if( field != "Reference" && field != "Value" )
+        // we update all values from library as well. This is necessary because two parts that have different value must also be two different parts in the library
+        if( field != "Reference" )
             m_fieldsBox->Check( idx, true );
     }
 
@@ -175,6 +183,11 @@ void DIALOG_UPDATE_FIELDS::updateFields( SCH_COMPONENT* aComponent )
         {
            field->SetText( newText );
         }
+
+        // update visibility
+        field->SetVisible(libField->IsVisible());
+
+        //field->ImportValues(*libField);
     }
 
     // Apply changes & clean-up
