@@ -50,6 +50,7 @@
 #include <lib_manager.h>
 #include <widgets/cmp_tree_pane.h>
 #include <widgets/component_tree.h>
+#include <widgets/PartPropertiesPane.h>
 #include <symbol_lib_table.h>
 
 #include <kicad_device_context.h>
@@ -258,6 +259,8 @@ LIB_EDIT_FRAME::LIB_EDIT_FRAME( KIWAY* aKiway, wxWindow* aParent ) :
     SyncLibraries( true );
     m_treePane = new CMP_TREE_PANE( this, m_libMgr );
 
+    m_propsPane = new PartPropertiesPane(this);
+
     ReCreateMenuBar();
     ReCreateHToolbar();
     ReCreateVToolbar();
@@ -314,6 +317,9 @@ LIB_EDIT_FRAME::LIB_EDIT_FRAME( KIWAY* aKiway, wxWindow* aParent ) :
                       wxAuiPaneInfo( mesg ).Name( "MsgPanel" ).Bottom().Layer( 10 ) );
 
     m_auimgr.AddPane( m_treePane, wxAuiPaneInfo().Name( "ComponentTree" ).Left().Row( 1 )
+            .Resizable().MinSize( 250, 400 ).Dock().CloseButton( false ) );
+
+    m_auimgr.AddPane( m_propsPane, wxAuiPaneInfo().Name( "PropertiesPane" ).Right().Row( 1 )
             .Resizable().MinSize( 250, 400 ).Dock().CloseButton( false ) );
 
     m_auimgr.Update();
@@ -1042,6 +1048,9 @@ void LIB_EDIT_FRAME::SetCurPart( LIB_PART* aPart )
 
     // Ensure synchronized pin edit can be enabled only symbols with interchangeable units
     m_syncPinEdit = aPart && aPart->IsMulti() && !aPart->UnitsLocked();
+
+	// load the part properties into the properties dialog
+	m_propsPane->SetPart(aPart);
 }
 
 
@@ -1747,3 +1756,48 @@ void LIB_EDIT_FRAME::SetIconScale( int aScale )
     Layout();
     SendSizeEvent();
 }
+
+void LIB_EDIT_FRAME::OnUpdateFieldValue(LIB_FIELD *aField, const wxString &newFieldValue){
+    LIB_PART* parent = aField->GetParent();
+    wxString oldFieldValue = aField->GetFullText( m_unit );
+    bool renamed = aField->GetId() == VALUE && newFieldValue != oldFieldValue;
+
+    if( renamed )
+    {
+        wxString msg;
+        wxString lib = GetCurLib();
+
+        // Test the current library for name conflicts
+        if( !lib.empty() && m_libMgr->PartExists( newFieldValue, lib ) )
+        {
+            msg.Printf( _(
+                "The name \"%s\" conflicts with an existing entry in the symbol library \"%s\"." ),
+                newFieldValue, lib );
+
+            DisplayErrorMessage( this, msg );
+            return;
+        }
+
+        SaveCopyInUndoList( parent, UR_LIB_RENAME );
+        parent->SetName( newFieldValue );
+
+        if( !parent->HasAlias( m_aliasName ) )
+            m_aliasName = newFieldValue;
+
+        m_libMgr->UpdatePartAfterRename( parent, oldFieldValue, lib );
+
+        // Reselect the renamed part
+        m_treePane->GetCmpTree()->SelectLibId( LIB_ID( lib, newFieldValue ) );
+    }
+
+    aField->SetText(newFieldValue);
+
+    if( !aField->InEditMode() && !renamed )
+        SaveCopyInUndoList( parent );
+
+    m_canvas->Refresh();
+
+    OnModify();
+    UpdateAliasSelectList();
+}
+
