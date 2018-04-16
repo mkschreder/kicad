@@ -50,7 +50,7 @@ class DIALOG_LIB_EDIT_TEXT;
 class CMP_TREE_PANE;
 class LIB_ID;
 class LIB_MANAGER;
-
+class PartPropertiesPane;
 
 /**
  * The symbol library editor main window.
@@ -63,6 +63,7 @@ class LIB_EDIT_FRAME : public SCH_BASE_FRAME
     wxComboBox*     m_partSelectBox;        ///< a Box to select a part to edit (if any)
     wxComboBox*     m_aliasSelectBox;       ///< a box to select the alias to edit (if any)
     CMP_TREE_PANE*  m_treePane;             ///< component search tree widget
+	PartPropertiesPane* m_propsPane;			///< pane that allows editing part properties without having to open another dialog
     LIB_MANAGER*    m_libMgr;               ///< manager taking care of temporary modificatoins
 
     /** Convert of the item currently being drawn. */
@@ -352,7 +353,7 @@ public:
     void OnUpdateSelectAlias( wxUpdateUIEvent& event );
     void OnUpdateElectricalType( wxUpdateUIEvent& aEvent );
     void OnUpdateSearchTreeTool( wxUpdateUIEvent& aEvent );
-
+	void OnUpdateFieldValue( LIB_FIELD *field, const wxString &value);
     void UpdateAliasSelectList();
     void UpdatePartSelectList();
 
