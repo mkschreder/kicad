@@ -69,40 +69,7 @@ void LIB_EDIT_FRAME::EditField( LIB_FIELD* aField )
     wxString oldFieldValue = aField->GetFullText( m_unit );
     bool renamed = aField->GetId() == VALUE && newFieldValue != oldFieldValue;
 
-    if( renamed )
-    {
-        wxString msg;
-        wxString lib = GetCurLib();
-
-        // Test the current library for name conflicts
-        if( !lib.empty() && m_libMgr->PartExists( newFieldValue, lib ) )
-        {
-            msg.Printf( _(
-                "The name \"%s\" conflicts with an existing entry in the symbol library \"%s\"." ),
-                newFieldValue, lib );
-
-            DisplayErrorMessage( this, msg );
-            return;
-        }
-
-        SaveCopyInUndoList( parent, UR_LIB_RENAME );
-        parent->SetName( newFieldValue );
-
-        if( !parent->HasAlias( m_aliasName ) )
-            m_aliasName = newFieldValue;
-
-        m_libMgr->UpdatePartAfterRename( parent, oldFieldValue, lib );
-
-        // Reselect the renamed part
-        m_treePane->GetCmpTree()->SelectLibId( LIB_ID( lib, newFieldValue ) );
-    }
-
-    if( !aField->InEditMode() && !renamed )
-        SaveCopyInUndoList( parent );
+    OnUpdateFieldValue(aField, newFieldValue);
 
     dlg.UpdateField( aField );
-    m_canvas->Refresh();
-
-    OnModify();
-    UpdateAliasSelectList();
 }
