@@ -37,6 +37,7 @@
 #include <kiface_i.h>
 #include <richio.h>
 #include <trace_helpers.h>
+#include <netlist.h>
 
 #include <eeschema_id.h>
 #include <class_library.h>
