@@ -54,6 +54,7 @@
 
 #include <dialogs/dialog_lib_new_component.h>
 
+#include <widgets/PartPropertiesPane.h>
 
 void LIB_EDIT_FRAME::DisplayLibInfos()
 {
@@ -363,6 +364,7 @@ void LIB_EDIT_FRAME::OnSavePart( wxCommandEvent& aEvent )
         m_libMgr->ClearPartModified( libId.GetLibItemName(), libId.GetLibNickname() );
 
     m_treePane->Refresh();
+	m_propsPane->Refresh();
 }
 
 

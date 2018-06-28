@@ -42,7 +42,7 @@
             <property name="minimum_size"></property>
             <property name="name">TUNER_SLIDER_BASE</property>
             <property name="pos"></property>
-            <property name="size">97,283</property>
+            <property name="size">131,283</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>

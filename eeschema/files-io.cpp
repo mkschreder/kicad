@@ -36,6 +36,7 @@
 #include <pgm_base.h>
 #include <kiface_i.h>
 #include <richio.h>
+#include <netlist.h>
 
 #include <eeschema_id.h>
 #include <class_library.h>
@@ -144,6 +145,13 @@ bool SCH_EDIT_FRAME::SaveEEFile( SCH_SCREEN* aScreen, bool aSaveUnderNewName,
 
             wxRemoveFile( autoSaveFileName.GetFullPath() );
         }
+
+		// automatically save a spice netlist
+		// TODO: this should probably be put elsewhere or be controlled by a settings options
+		wxFileName fn = schematicFileName;
+		fn.SetExt("cir");
+		//printf("Saving netlist to %ls\n", fn.GetFullPath().wc_str());
+		CreateNetlist( NET_TYPE_SPICE, fn.GetFullPath(), 0, NULL, true );
 
         // Update the screen and frame info.
         if( aSaveUnderNewName )

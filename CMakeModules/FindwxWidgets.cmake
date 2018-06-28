@@ -174,8 +174,8 @@
 # Helper macro to control the debugging output globally. There are
 # two versions for controlling how verbose your output should be.
 macro(DBG_MSG _MSG)
-#  message(STATUS
-#    "${CMAKE_CURRENT_LIST_FILE}(${CMAKE_CURRENT_LIST_LINE}): ${_MSG}")
+ message(STATUS
+   "${CMAKE_CURRENT_LIST_FILE}(${CMAKE_CURRENT_LIST_LINE}): ${_MSG}")
 endmacro()
 macro(DBG_MSG_V _MSG)
 #  message(STATUS
@@ -231,7 +231,7 @@ endif()
 #=====================================================================
 if(wxWidgets_FIND_STYLE STREQUAL "win32")
   # Useful common wx libs needed by almost all components.
-  set(wxWidgets_COMMON_LIBRARIES png tiff jpeg zlib regex expat)
+  set(wxWidgets_COMMON_LIBRARIES png tiff jpeg zlib regex expat propgrid)
 
   # DEPRECATED: Use find_package(wxWidgets COMPONENTS mono) instead.
   if(NOT wxWidgets_FIND_COMPONENTS)
@@ -733,11 +733,19 @@ else()
     # UNIX: Start actual work.
     #-----------------------------------------------------------------
     # Support cross-compiling, only search in the target platform.
+    set(wxWidgets_CONFIG_EXECUTABLE "")
     find_program(wxWidgets_CONFIG_EXECUTABLE
       NAMES wx-config wx-config-3.1 wx-config-3.0 wx-config-2.9 wx-config-2.8
+      PATHS /usr/bin/ /usr/local/bin
       DOC "Location of wxWidgets library configuration provider binary (wx-config)."
-      ONLY_CMAKE_FIND_ROOT_PATH
       )
+
+    # I have no idea why the above does not work when using custom wxWidgets in /usr/local/bin
+    if(NOT wxWidgets_CONFIG_EXECUTABLE)
+        execute_process(COMMAND bash -c "which wx-config | tr -d '\n'" OUTPUT_VARIABLE wxWidgets_CONFIG_EXECUTABLE)
+    endif()
+
+    DBG_MSG("Using wx-config: ${wxWidgets_CONFIG_EXECUTABLE}")
 
     if(wxWidgets_CONFIG_EXECUTABLE)
       set(wxWidgets_FOUND TRUE)
