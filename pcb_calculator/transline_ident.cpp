@@ -162,12 +162,6 @@ TRANSLINE_IDENT::TRANSLINE_IDENT( enum TRANSLINE_TYPE_ID aType )
         m_TLine    = new MICROSTRIP();
         m_Icon = new wxBitmap( microstrip_xpm );
 
-<<<<<<< 09e35dd9fa81600e09e68a4c221a6eb95edcf607
-        m_Messages.Add( _( "ErEff:" ) );
-        m_Messages.Add( _( "Conductor Losses:" ) );
-        m_Messages.Add( _( "Dielectric Losses:" ) );
-        m_Messages.Add( _( "Skin Depth:" ) );
-=======
         m_Messages.Add( _( "ErEff" ) );
         m_Messages.Add( _( "Conductor Losses" ) );
         m_Messages.Add( _( "Dielectric Losses" ) );
@@ -175,7 +169,6 @@ TRANSLINE_IDENT::TRANSLINE_IDENT( enum TRANSLINE_TYPE_ID aType )
         m_Messages.Add( _( "Capacitance" ) );
         m_Messages.Add( _( "Inductance" ) );
         m_Messages.Add( _( "Resistance" ) );
->>>>>>> add a few more calculations to microstrip calculator
 
         AddPrm( new TRANSLINE_PRM( PRM_TYPE_SUBS, H_PRM,
                                    _( "H:" ), _( "Height of Substrate" ), 0.2, true ) );
